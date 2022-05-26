@@ -42,10 +42,9 @@ export const HomePage = () => {
         </form>
         <h2>Saved Codes</h2>
         <ul className="code-list">
-          {codes?.loading &&
-            <Loader />
- }
-  {codes?.loading && codes?.data?.length?(
+          {codes?.loading && <Loader />}
+          {!codes?.loading &&
+            codes?.data?.length > 0 &&
             codes?.data?.map((code) => (
               <li key={code._id}>
                 {LANG_IMG[code.lang]}
@@ -61,8 +60,8 @@ export const HomePage = () => {
                   <i className="fa fa-trash" />
                 </div>
               </li>
-            ))
-          ) : (
+            ))}
+          {!codes?.loading && codes?.data?.length === 0 && (
             <p>There is no any saved codes </p>
           )}
         </ul>
