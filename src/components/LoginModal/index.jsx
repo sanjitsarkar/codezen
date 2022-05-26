@@ -24,7 +24,7 @@ const customStyles = {
   },
 };
 export const LoginModal = ({ isModalOpen, closeModal }) => {
-  const { logIn, loginCred, setLoginCred } = useAuth();
+  const { user, logIn, loginCred, setLoginCred } = useAuth();
   return (
     <Modal
       id="modal-login"
@@ -61,7 +61,9 @@ export const LoginModal = ({ isModalOpen, closeModal }) => {
           placeholder="Password"
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit" disabled={user.loading}>
+          {!user.loading ? "Login" : "Logging in ...."}
+        </button>
       </form>
     </Modal>
   );

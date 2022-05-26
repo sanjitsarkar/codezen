@@ -149,6 +149,7 @@ const CodesProvider = ({ children }) => {
         codes,
         fetchCodes,
         createCode,
+        dispatchRunCode,
         searchCodes,
         deleteCode,
         shareCode,

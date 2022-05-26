@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider, CodesProvider } from "../context";
+import { AuthProvider, CodesProvider, SocketProvider } from "../context";
 
 export const ProviderWrapper = ({ children }) => {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <CodesProvider>{children}</CodesProvider>
+        <SocketProvider>
+          <CodesProvider>{children}</CodesProvider>
+        </SocketProvider>
       </AuthProvider>
     </BrowserRouter>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   CodeEditor,
   CodeEditorFooter,
@@ -40,11 +40,11 @@ export const CodeEditorPage = () => {
           <>
             <CodeEditor _code={code.data} user_id={user?.data?._id} />
             <InputSection />
-            <OutputSection />
+            <OutputSection codeId={codeId} />
           </>
         )}
       </div>
-      <CodeEditorFooter ref={ref} />
+      <CodeEditorFooter ref={ref} codeId={codeId} />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components";
-import { useAuth, useCodes } from "../../context";
+import { useAuth, useCodes, useSocket } from "../../context";
 import { useInput } from "../../hooks";
 import { LANG_IMG } from "../../utils";
 import "./Home.scss";
@@ -11,6 +11,8 @@ export const HomePage = () => {
   const [language, bindLanguage, resetLanguage] = useInput("python");
   const [search, bindSearch, resetSearch] = useInput("");
   const { isLoggedIn } = useAuth();
+  const { socket } = useSocket();
+
   const { codes, fetchCodes, createCode, searchCodes, deleteCode } = useCodes();
   useEffect(() => {
     if (isLoggedIn)

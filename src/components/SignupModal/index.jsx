@@ -24,7 +24,7 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 export const SignupModal = ({ isModalOpen, closeModal }) => {
-  const { signUp, signupCred, setSignupCred } = useAuth();
+  const { user, signUp, signupCred, setSignupCred } = useAuth();
   return (
     <Modal
       isOpen={isModalOpen}
@@ -79,7 +79,9 @@ export const SignupModal = ({ isModalOpen, closeModal }) => {
           placeholder="Password"
           required
         />
-        <button type="submit">Signup</button>
+        <button type="submit" disabled={user.loading}>
+          {!user.loading ? "Signup" : "Creating account ...."}
+        </button>
       </form>
     </Modal>
   );

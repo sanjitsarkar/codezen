@@ -12,7 +12,7 @@ import React, { createRef, useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import { useParams } from "react-router-dom";
 import Switch from "react-switch";
-import { useAuth, useCodes } from "../../context";
+import { useAuth, useCodes, useSocket } from "../../context";
 import { changeFileFormat } from "../../utils";
 import "./code_editor.scss";
 
@@ -30,8 +30,19 @@ export const CodeEditor = ({ _code, user_id }) => {
   const [share, setShare] = useState(_code?.share);
   const [toggleClass, setToggleClass] = useState("file-name");
   const ref = createRef();
-  const { shareCode, fetchCode, runCode, saveCode, input } = useCodes();
+  const { shareCode, fetchCode, runCode, saveCode, input, setInput } =
+    useCodes();
   const { user } = useAuth();
+  const { socket } = useSocket();
+  useEffect(() => {
+    socket.emit("code", { codeId, code, input });
+  }, [code, input]);
+  useEffect(() => {
+    socket.on(codeId, ({ codeId, code, input }) => {
+      setCode(code);
+      setInput(input);
+    });
+  }, [socket]);
 
   useEffect(() => {
     changeFileFormat(
