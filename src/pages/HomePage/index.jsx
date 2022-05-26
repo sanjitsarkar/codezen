@@ -11,7 +11,6 @@ export const HomePage = () => {
   const [language, bindLanguage, resetLanguage] = useInput("python");
   const [search, bindSearch, resetSearch] = useInput("");
   const { isLoggedIn } = useAuth();
-  const { socket } = useSocket();
 
   const { codes, fetchCodes, createCode, searchCodes, deleteCode } = useCodes();
   useEffect(() => {
@@ -43,10 +42,10 @@ export const HomePage = () => {
         </form>
         <h2>Saved Codes</h2>
         <ul className="code-list">
-          {codes.loading ? (
+          {codes?.loading ? (
             <Loader />
-          ) : codes.data.length ? (
-            codes.data.map((code) => (
+          ) : codes?.data?.length ? (
+            codes?.data?.map((code) => (
               <li key={code._id}>
                 {LANG_IMG[code.lang]}
                 <Link to={"/codes/" + code._id}>

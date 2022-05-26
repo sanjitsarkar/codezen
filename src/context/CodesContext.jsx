@@ -19,7 +19,7 @@ export const initialCodeState = {
 const CodesProvider = ({ children }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
-  const [codes, dispatchCodes] = useReducer(reducer, initialState);
+  const [codes, dispatchCodes] = useReducer(reducer, initialCodeState);
   const [savedCode, dispatchSaveCode] = useReducer(reducer, initialState);
   const [codeOutput, dispatchRunCode] = useReducer(reducer, initialState);
   const [code, dispatchCode] = useReducer(reducer, initialCodeState);

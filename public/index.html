@@ -4,12 +4,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="%PUBLIC_URL%/image/favicon.ico" />
+  <meta name="theme-color" content="#192F43" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/image/apple-touch-icon.png" />
+  <!--
+          manifest.json provides metadata used when your web app is installed on a
+          user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+        -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://codezzen.herokuapp.com/" />
+  <link rel="canonical" href="https://codezen.vercel.app/" />
   <meta name="keywords"
-    content="codzzen, cp, compiler, competitive programming,competitive coding, codechef, codeforces, leetcode, hackerrank,gfg,faang">
+    content="codzen, cp, compiler, competitive programming,competitive coding, codechef, codeforces, leetcode, hackerrank,gfg,faang">
   <meta name="author" content="John Doe">
-  <meta title="Codezzen" name="description"
+  <meta title="Codezen" name="description"
     content="An online editor for competitive coder, interviews, teaching and many more..." />
   <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -42,12 +51,23 @@
       font-family: 'Poppins', sans-serif;
     }
   </style>
-  <title>Codezzen</title>
+  <title>Codezen</title>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('worker.js').then(function (registration) {
+        }, function (err) {
+        }).catch(function (err) {
+        });
+      });
+    } else {
+    }
+  </script>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
