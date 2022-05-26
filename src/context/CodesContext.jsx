@@ -104,8 +104,6 @@ const CodesProvider = ({ children }) => {
       dispatchRunCode({ type: ACTION_TYPE_LOADING });
       await saveCode(title, code, format, language, codeId);
 
-      console.log("input", input);
-      console.log("codeId", codeId);
       let inputData = input;
       if (inputData.includes("\n")) inputData = inputData.split("\n");
       else if (inputData.includes(" ")) inputData = inputData.split(" ");
@@ -120,7 +118,6 @@ const CodesProvider = ({ children }) => {
       }
       notify("Compiled...");
     } catch (e) {
-      console.log("e", formatError(e));
       dispatchRunCode({ type: ACTION_TYPE_FAILURE, payload: formatError(e) });
     }
   };
@@ -132,7 +129,6 @@ const CodesProvider = ({ children }) => {
       setShare(response.data.share);
       dispatchCode({ type: ACTION_TYPE_SUCCESS, payload: response.data });
     } catch (e) {
-      console.log(formatError(e));
       dispatchCode({ type: ACTION_TYPE_FAILURE, payload: formatError(e) });
     }
   };

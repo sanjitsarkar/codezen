@@ -80,7 +80,6 @@ const AuthProvider = ({ children }) => {
 
       setIsLoggedIn(true);
     } catch (err) {
-      console.log("err", err);
       notify(formatError(err), "error");
 
       dispatch({ type: ACTION_TYPE_FAILURE, payload: formatError(err) });
