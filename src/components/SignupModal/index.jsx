@@ -80,7 +80,7 @@ export const SignupModal = ({ isModalOpen, closeModal }) => {
           required
         />
         <button type="submit" disabled={user.loading}>
-          {!user.loading ? "Signup" : "Creating account ...."}
+          {!user.loading ? "Signup" : "Creating account...."}
         </button>
       </form>
     </Modal>

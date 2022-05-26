@@ -62,7 +62,7 @@ export const LoginModal = ({ isModalOpen, closeModal }) => {
           required
         />
         <button type="submit" disabled={user.loading}>
-          {!user.loading ? "Login" : "Logging in ...."}
+          {!user.loading ? "Login" : "Logging in...."}
         </button>
       </form>
     </Modal>

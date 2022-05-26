@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components";
-import { useAuth, useCodes, useSocket } from "../../context";
+import { useAuth, useCodes } from "../../context";
 import { useInput } from "../../hooks";
 import { LANG_IMG } from "../../utils";
 import "./Home.scss";
@@ -42,9 +42,10 @@ export const HomePage = () => {
         </form>
         <h2>Saved Codes</h2>
         <ul className="code-list">
-          {codes?.loading ? (
+          {codes?.loading &&
             <Loader />
-          ) : codes?.data?.length ? (
+ }
+  {codes?.loading && codes?.data?.length?(
             codes?.data?.map((code) => (
               <li key={code._id}>
                 {LANG_IMG[code.lang]}
