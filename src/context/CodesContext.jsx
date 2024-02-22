@@ -19,6 +19,7 @@ export const initialCodeState = {
 const CodesProvider = ({ children }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
+  const [shouldEmit, setShouldEmit] = useState(false);
   const [codes, dispatchCodes] = useReducer(reducer, initialCodeState);
   const [savedCode, dispatchSaveCode] = useReducer(reducer, initialState);
   const [codeOutput, dispatchRunCode] = useReducer(reducer, initialState);
@@ -126,7 +127,7 @@ const CodesProvider = ({ children }) => {
     dispatchCode({ type: ACTION_TYPE_LOADING });
     try {
       const response = await callApi("get", "codes/" + codeId, true);
-      setShare(response.data.share);
+      setShare?.(response.data.share);
       dispatchCode({ type: ACTION_TYPE_SUCCESS, payload: response.data });
     } catch (e) {
       dispatchCode({ type: ACTION_TYPE_FAILURE, payload: formatError(e) });
@@ -157,9 +158,12 @@ const CodesProvider = ({ children }) => {
         code,
         runCode,
         saveCode,
+        savedCode,
         codeOutput,
         input,
         setInput,
+        shouldEmit,
+        setShouldEmit,
       }}
     >
       {children}

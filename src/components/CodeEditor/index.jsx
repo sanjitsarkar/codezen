@@ -17,7 +17,7 @@ import { changeFileFormat } from "../../utils";
 import "./code_editor.scss";
 
 export const CodeEditor = ({ _code, user_id }) => {
-  const languages = ["python", "c_cpp", "javascript"];
+  const languages = React.useMemo(() => ["python", "c_cpp", "javascript"], []);
   const [compilerLanguage, setCompilerLanguage] = useState(languages[0]);
   const { id: codeId } = useParams();
   const [title, setTitle] = useState(_code.title);
@@ -30,19 +30,50 @@ export const CodeEditor = ({ _code, user_id }) => {
   const [share, setShare] = useState(_code?.share);
   const [toggleClass, setToggleClass] = useState("file-name");
   const ref = createRef();
-  const { shareCode, fetchCode, runCode, saveCode, input, setInput } =
-    useCodes();
+  const {
+    shareCode,
+    runCode,
+    saveCode,
+    input,
+    setInput,
+    shouldEmit,
+    setShouldEmit,
+  } = useCodes();
   const { user } = useAuth();
   const { socket } = useSocket();
   useEffect(() => {
-    socket.emit("code", { codeId, code, input });
-  }, [code, input]);
+    if (shouldEmit) {
+      socket.emit("code", {
+        codeId,
+        code,
+        input,
+        language,
+        // fileName,
+      });
+    }
+  }, [
+    code,
+    // fileName,
+    codeId,
+    input,
+    language,
+    setShouldEmit,
+    shouldEmit,
+    socket,
+  ]);
+
   useEffect(() => {
-    socket.on(codeId, ({ codeId, code, input }) => {
+    socket.on(codeId, ({ fileName, input, code, language }) => {
       setCode(code);
+      setShouldEmit(false);
+      // setFileName(fileName);
       setInput(input);
+      // setLanguage(language);
     });
-  }, [socket]);
+    return () => {
+      socket.off(codeId);
+    };
+  }, [codeId, setInput, setShouldEmit, socket]);
 
   useEffect(() => {
     changeFileFormat(
@@ -54,7 +85,7 @@ export const CodeEditor = ({ _code, user_id }) => {
       code,
       setCode
     );
-  }, []);
+  }, [code, fileName, language, languages]);
 
   const toggleEdit = () => {
     setEdit(!edit);
@@ -66,11 +97,10 @@ export const CodeEditor = ({ _code, user_id }) => {
     setFormat(fileName.split(".")[1]);
     setTitle(fileName.split(".")[0]);
   }, [fileName]);
-
   useEffect(() => {
     if (language !== "python")
       beautify.beautify(ref.current.refEditor.env.editor.session);
-  }, []);
+  }, [language, ref]);
   return (
     <div className="code-editor">
       <div className="top-bar">
@@ -78,6 +108,7 @@ export const CodeEditor = ({ _code, user_id }) => {
           className={toggleClass}
           value={fileName}
           onChange={(e) => {
+            // setShouldEmit(true);
             setFileName(e.target.value);
           }}
           onDoubleClick={() => {
@@ -93,6 +124,7 @@ export const CodeEditor = ({ _code, user_id }) => {
               value={language}
               onChange={(e) => {
                 setLanguage(e.target.value);
+                // setShouldEmit(true);
                 changeFileFormat(
                   e.target.value,
                   languages,
@@ -130,7 +162,7 @@ export const CodeEditor = ({ _code, user_id }) => {
           >
             <i className="fa fa-play" aria-hidden="true"></i>
           </div>
-          {_code.user_id == user?.data?._id && (
+          {_code.user_id === user?.data?._id && (
             <label className="share" htmlFor="">
               <span>Share</span>
               <Switch
@@ -163,7 +195,10 @@ export const CodeEditor = ({ _code, user_id }) => {
         placeholder=""
         theme="monokai"
         mode={compilerLanguage}
-        onChange={(currentCode) => setCode(currentCode)}
+        onChange={(currentCode) => {
+          setShouldEmit(true);
+          setCode(currentCode);
+        }}
         fontSize={18}
         commands={Beautify.commands}
         showPrintMargin={false}

@@ -14,10 +14,10 @@ export const OutputSection = ({ codeId }) => {
     socket.on(codeId + "output", ({ codeOutput }) => {
       setOutput(codeOutput);
     });
-  }, [socket]);
+  }, [codeId, socket]);
   useEffect(() => {
     socket.emit("run", { codeId, codeOutput });
-  }, [codeOutput]);
+  }, [codeId, codeOutput, socket]);
   return (
     <div className="output-section">
       <h1>Output</h1>

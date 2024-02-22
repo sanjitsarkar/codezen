@@ -22,11 +22,12 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [profile, dispatchProfile] = useReducer(reducer, initialState);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage?.getItem("token")
+  );
   const [token, setToken] = useState();
   const [loginCred, setLoginCred] = useState(initialLoginCredState);
   const [signupCred, setSignupCred] = useState(initialSignupCredState);
-
   const signUp = async () => {
     dispatch({ type: ACTION_TYPE_LOADING });
     try {
@@ -47,7 +48,6 @@ const AuthProvider = ({ children }) => {
       setLoginCred(initialLoginCredState);
       setSignupCred(initialSignupCredState);
       dispatch({ type: ACTION_TYPE_SUCCESS, payload: result.data });
-
       setIsLoggedIn(true);
     } catch (err) {
       notify(formatError(err), "error");
@@ -116,19 +116,19 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setToken(localStorage.getItem("token"));
+    if (isLoggedIn && state.data.token) {
+      setToken(localStorage?.getItem("token"));
       localStorage.setItem("user", JSON.stringify(state.data));
       localStorage.setItem("token", state.data.token);
     }
   }, [isLoggedIn, state]);
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
+    if (localStorage?.getItem("token")) {
+      setToken(localStorage?.getItem("token"));
       setIsLoggedIn(true);
       dispatch({
         type: ACTION_TYPE_SUCCESS,
-        payload: JSON.parse(localStorage.getItem("user")),
+        payload: JSON.parse(localStorage?.getItem("user")),
       });
     }
   }, []);

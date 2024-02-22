@@ -1,73 +1,7 @@
 import toast from "react-hot-toast";
 export { callApi } from "./callApi";
 
-export function timeSince(date) {
-  date = new Date(date);
-  let seconds = Math.abs(Math.floor((new Date() - date) / 1000));
 
-  let interval = seconds / 31536000;
-  let res;
-  if (interval > 1) {
-    interval = Math.floor(interval);
-    res = interval + " year";
-    if (interval !== 1) return res + "s";
-    return res;
-  }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    interval = Math.floor(interval);
-    res = interval + " month";
-    if (interval !== 1) return res + "s";
-    return res;
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    interval = Math.floor(interval);
-    res = interval + " day";
-    if (interval !== 1) return res + "s";
-    return res;
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    interval = Math.floor(interval);
-    res = interval + " hour";
-    if (interval !== 1) return res + "s";
-    return res;
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    interval = Math.floor(interval);
-    res = interval + " minute";
-    if (interval !== 1) return res + "s";
-    return res;
-  }
-  interval = Math.floor(interval);
-  res = interval + " second";
-  if (interval !== 1) return res + "s";
-  if (interval < 1) return "Just now";
-  return res;
-}
-export function convertTimestampToDate(timestamp) {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  let date = new Date(timestamp);
-
-  return (
-    months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
-  );
-}
 
 export const formatError = (err) => {
   if (err?.response?.data?.errors) {
@@ -76,10 +10,7 @@ export const formatError = (err) => {
   return err.message;
 };
 
-export const GUEST_CREDENTIAL = {
-  email: "johndoe@gmail.com",
-  password: "123456",
-};
+
 
 export const initialSignupCredState = {
   email: "",

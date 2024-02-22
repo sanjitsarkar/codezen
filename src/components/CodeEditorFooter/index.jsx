@@ -12,7 +12,7 @@ export const CodeEditorFooter = forwardRef((props, ref) => {
     socket.on(props.codeId + "output", ({ codeOutput }) => {
       setError(codeOutput);
     });
-  }, [socket]);
+  }, [props.codeId, socket]);
 
   return (
     <div className="code-editor-footer" ref={ref}>

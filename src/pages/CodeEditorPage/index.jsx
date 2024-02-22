@@ -14,11 +14,10 @@ export const CodeEditorPage = () => {
   const { code, fetchCode } = useCodes();
   const { user } = useAuth();
   const codeId = useParams().id;
-  const [share, setShare] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
-      await fetchCode(codeId, setShare);
+      await fetchCode(codeId);
     })();
   }, [codeId]);
 
@@ -30,13 +29,13 @@ export const CodeEditorPage = () => {
     ) {
       navigate("/");
     }
-  }, [code]);
+  }, [code, navigate, user]);
   const ref = useRef(null);
   return (
     <>
       <div className="code-editor-page">
         {code.loading && <Loader />}
-        {!code.loading && code?.data?.user_id === user?.data?._id && (
+        {!code.loading && (
           <>
             <CodeEditor _code={code.data} user_id={user?.data?._id} />
             <InputSection />

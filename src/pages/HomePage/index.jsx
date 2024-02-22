@@ -7,8 +7,8 @@ import { LANG_IMG } from "../../utils";
 import "./Home.scss";
 
 export const HomePage = () => {
-  const [fileName, bindFileName, resetFileName] = useInput("");
-  const [language, bindLanguage, resetLanguage] = useInput("python");
+  const [fileName, bindFileName] = useInput("");
+  const [language, bindLanguage] = useInput("python");
   const [search, bindSearch, resetSearch] = useInput("");
   const { isLoggedIn } = useAuth();
 
