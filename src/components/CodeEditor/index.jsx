@@ -8,6 +8,7 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-monokai";
+
 import React, { createRef, useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import { useParams } from "react-router-dom";
@@ -15,6 +16,7 @@ import Switch from "react-switch";
 import { useAuth, useCodes, useSocket } from "../../context";
 import { changeFileFormat } from "../../utils";
 import "./code_editor.scss";
+import MiniLoader from "../Loader/Loader";
 
 export const CodeEditor = ({ _code, user_id }) => {
   const languages = React.useMemo(() => ["python", "c_cpp", "javascript"], []);
@@ -37,6 +39,7 @@ export const CodeEditor = ({ _code, user_id }) => {
     input,
     setInput,
     shouldEmit,
+    codeOutput,
     setShouldEmit,
   } = useCodes();
   const { user } = useAuth();
@@ -47,28 +50,15 @@ export const CodeEditor = ({ _code, user_id }) => {
         codeId,
         code,
         input,
-        language,
-        // fileName,
       });
     }
-  }, [
-    code,
-    // fileName,
-    codeId,
-    input,
-    language,
-    setShouldEmit,
-    shouldEmit,
-    socket,
-  ]);
+  }, [code, codeId, input, shouldEmit, socket]);
 
   useEffect(() => {
-    socket.on(codeId, ({ fileName, input, code, language }) => {
-      setCode(code);
+    socket.on(codeId, ({ input, code }) => {
       setShouldEmit(false);
-      // setFileName(fileName);
+      setCode(code);
       setInput(input);
-      // setLanguage(language);
     });
     return () => {
       socket.off(codeId);
@@ -97,18 +87,16 @@ export const CodeEditor = ({ _code, user_id }) => {
     setFormat(fileName.split(".")[1]);
     setTitle(fileName.split(".")[0]);
   }, [fileName]);
-  useEffect(() => {
-    if (language !== "python")
-      beautify.beautify(ref.current.refEditor.env.editor.session);
-  }, [language, ref]);
+
   return (
     <div className="code-editor">
       <div className="top-bar">
         <input
           className={toggleClass}
           value={fileName}
+          disabled={share}
           onChange={(e) => {
-            // setShouldEmit(true);
+            setTitle(e.target.value);
             setFileName(e.target.value);
           }}
           onDoubleClick={() => {
@@ -121,10 +109,10 @@ export const CodeEditor = ({ _code, user_id }) => {
             <select
               name="language"
               id=""
+              disabled={share}
               value={language}
               onChange={(e) => {
                 setLanguage(e.target.value);
-                // setShouldEmit(true);
                 changeFileFormat(
                   e.target.value,
                   languages,
@@ -153,15 +141,19 @@ export const CodeEditor = ({ _code, user_id }) => {
             <i className="fas fa-save    "></i>
           </div>
 
-          <div
-            className="run"
-            onClick={() => {
-              runCode(title, code, format, language, input, codeId, ref);
-              setRun(!run);
-            }}
-          >
-            <i className="fa fa-play" aria-hidden="true"></i>
-          </div>
+          {codeOutput?.loading ? (
+            <MiniLoader />
+          ) : (
+            <div
+              className="run"
+              onClick={() => {
+                runCode(title, code, format, language, input, codeId, ref);
+                setRun(!run);
+              }}
+            >
+              <i className="fa fa-play" aria-hidden="true"></i>
+            </div>
+          )}
           {_code.user_id === user?.data?._id && (
             <label className="share" htmlFor="">
               <span>Share</span>

@@ -147,13 +147,15 @@ export const changeFileFormat = (
     if (code === "")
       setCode(`//Don't edit the default startup code
 
-#include<bits/stdc++.h>
+#include<iostream>
 
 using namespace std;
 
 int main() {
 
+// write your code here
 
+  return 0;
 
 }`);
   } else if (lang === "c") {
@@ -164,12 +166,11 @@ int main() {
 
 #include<bits/stdc++.h>
 
-using namespace std;
-
 int main() {
     
-    
+// write your code here
 
+  return 0;
 
 }
 `);
